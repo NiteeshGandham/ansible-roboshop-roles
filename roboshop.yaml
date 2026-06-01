@@ -1,4 +1,4 @@
-name: confguring roboshop
+name: configuring "{{ component }}" server
 hosts: "{{component}}"
 become: yes
 roles:
