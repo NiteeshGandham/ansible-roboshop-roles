@@ -1,0 +1,6 @@
+ansible_user: ec2-user
+ansible_password: DevOps321
+
+
+MONGODB_HOST: mongodb-dev.ngandham.online
+CATALOGUE_HOST: catalogue-dev.ngandham.online
