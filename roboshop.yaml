@@ -1,0 +1,5 @@
+name: confguring roboshop
+hosts: "{{component}}"
+become: yes
+roles:
+- {{component}}
