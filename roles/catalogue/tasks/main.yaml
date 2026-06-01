@@ -1,29 +1,22 @@
 - name: run the appsetup file from common
-  ansible.debug.import_role:
+  ansible.builtin.import_role:
     name: common
-    tasks_from: appsetup.yaml
+    tasks_from: app-setup.yaml
 
 
 - name: run the nodejs-setup file from common
-  ansible.debug.import_role:
+  ansible.builtin.import_role:
     name: common
     tasks_from: nodejs-setup.yaml
 
 
 
+- name: run the systemd-setup file from common
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: systemd-setup.yaml
 
 
-
-
-
-
-
-
-- name: copy a service file
-  ansible.builtin.service:
-    src : catalogue.service
-    dest: /etc/systemd/system/catalogue.service
-    
 
 - name: Setup(copying) the MongoDB repo file
   ansible.builtin.template:
@@ -41,9 +34,6 @@
   ansible.builtin.command: mongosh --host "{{ MONGODB_HOST }}" --quiet --eval 'db.getMongo().getDBNames().indexOf("catalogue")'
   register: catalouge_output
 
-- name: print the catalouge output
-  ansible.builtin.debug:
-    msg: "{{ catalouge_output }}"
 
 - name: load the products
   ansible.builtin.shell: mongosh --host "{{ MONGODB_HOST }}" </app/db/master-data.js
