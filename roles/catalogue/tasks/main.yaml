@@ -1,0 +1,61 @@
+- name: run the appsetup file from common
+  ansible.debug.import_role:
+    name: common
+    tasks_from: appsetup.yaml
+
+
+- name: run the nodejs-setup file from common
+  ansible.debug.import_role:
+    name: common
+    tasks_from: nodejs-setup.yaml
+
+
+
+
+
+
+
+
+
+
+
+- name: copy a service file
+  ansible.builtin.service:
+    src : catalogue.service
+    dest: /etc/systemd/system/catalogue.service
+    
+
+- name: Setup(copying) the MongoDB repo file
+  ansible.builtin.template:
+    src: mongo.repo
+    dest: /etc/yum.repos.d/mongo.repo
+    
+
+- name: install mongodb client
+  ansible.builtin.dnf:
+    name: mongodb-mongosh
+    state: present
+
+
+- name: check products loades or not
+  ansible.builtin.command: mongosh --host "{{ MONGODB_HOST }}" --quiet --eval 'db.getMongo().getDBNames().indexOf("catalogue")'
+  register: catalouge_output
+
+- name: print the catalouge output
+  ansible.builtin.debug:
+    msg: "{{ catalouge_output }}"
+
+- name: load the products
+  ansible.builtin.shell: mongosh --host "{{ MONGODB_HOST }}" </app/db/master-data.js
+  when: catalouge_output.stdout | int < 0
+
+- name: start and eneble the catalouge
+  ansible.builtin.service:
+    name: catalogue
+    enabled: yes
+    state: restarted
+
+
+
+
+  
