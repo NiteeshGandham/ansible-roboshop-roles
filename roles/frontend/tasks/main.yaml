@@ -45,4 +45,4 @@
   ansible.builtin.template:
     src: nginx.conf
     dest: /etc/nginx/nginx.conf
-  notify: start and enable the nginx
+  notify: restart nginx
