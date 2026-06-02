@@ -4,11 +4,13 @@
     tasks_from: app-setup.yaml
 
 
-- name: run the nodejs-setup file from common
+- name: run the nodejs-setup file from common 
+  tags:
+  - deployment
   ansible.builtin.import_role:
     name: common
     tasks_from: nodejs-setup.yaml
-
+#ansible-playbook -e component=catalogue -t deployment roboshop.yaml
 
 
 - name: run the systemd-setup file from common
